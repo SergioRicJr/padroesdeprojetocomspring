@@ -1,6 +1,9 @@
 package one.digitalinnovation.padroesprojetospring.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import one.digitalinnovation.padroesprojetospring.model.Cliente;
+import one.digitalinnovation.padroesprojetospring.model.ClienteRepository;
 import one.digitalinnovation.padroesprojetospring.service.ClienteService;
 
 
@@ -27,6 +31,9 @@ import one.digitalinnovation.padroesprojetospring.service.ClienteService;
 public class ClienteRestController {
 
 	@Autowired
+	private ClienteRepository clienteRep;
+
+	@Autowired
 	private ClienteService clienteService;
 
 	@GetMapping
@@ -37,6 +44,11 @@ public class ClienteRestController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {
 		return ResponseEntity.ok(clienteService.buscarPorId(id));
+	}
+
+	@GetMapping("/mais/{nome}")
+	public List<Cliente> buscarPorNome(@Param("nome") String nome) {
+		return clienteRep.filtrarPorNome(nome);
 	}
 
 	@PostMapping
